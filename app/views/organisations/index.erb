@@ -1,0 +1,45 @@
+<% if current_user.organisation_id %>
+<%= current_user.organisation.name %>
+<%= link_to "Edit", edit_organisation_path(current_user.organisation)%>
+<%= link_to "Delete", organisation_path(current_user.organisation), method: :delete%>
+<h1>Shifts</h1>
+
+ <%= form_with model: @shift do |form| %>
+        <label>Employe Name:</label> 
+        <%= form.text_field :name%>
+        <label>Shift date </label> 
+        <%= form.date_field :shift_date%>
+        <label>Start time </label>
+        <%= form.time_field :start%>
+        <label>End time </label> 
+        <%= form.time_field :end%>
+        <label>Break length </label> 
+        <%= form.number_field :break_length %>
+        <%= form.submit "Create shift"%>
+<% end %>
+
+
+
+<% else %>
+<p>You aren't a member of any organisations. Join an existing one or create a new one </p>
+    <% if @organisations %>
+        <h3>Organisations</h3>
+        <ul>
+        <% @organisations.each do |organisation|%>
+            <li><%=organisation.name%> 
+            <%= link_to "Edit", edit_organisation_path(organisation)%> 
+            <%= link_to "Join", join_organisation_path(organisation) %>
+
+        <% end %>
+        </ul>
+    <% end %>
+    <h3>Create organisation</h3>
+
+    <%= form_with model: @organisation do |form| %>
+        <label>Name</label> 
+        <%= form.text_field :name%><br/>
+        <label>Hourly Rate</label> 
+        <%= form.number_field :hourly_rate%><br/>
+        <%= form.submit "Create and Join"%>
+    <% end %>
+<% end %>
